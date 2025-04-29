@@ -9,11 +9,20 @@ const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
 
+function handleEscape(evt) {
+  if (evt.key === "Escape") {
+    const modal = document.querySelector(".popup_visible");
+    closeModal(modal);
+  }
+}
+
 const openModal = (modal) => {
+  document.addEventListener("keydown", handleEscape);
   modal.classList.add("popup_visible");
 };
 
 const closeModal = (modal) => {
+  document.removeEventListener("keydown", handleEscape);
   modal.classList.remove("popup_visible");
 };
 
