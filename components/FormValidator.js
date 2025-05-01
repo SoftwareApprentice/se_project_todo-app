@@ -2,8 +2,6 @@ export class FormValidator {
   constructor(settings, form) {
     this._formElement = form;
     this._settings = settings;
-    console.log(this._formElement);
-    console.log(this._settings);
   }
 
   _showInputError(inputElement, errorMessage) {
