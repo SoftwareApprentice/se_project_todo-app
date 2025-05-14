@@ -42,7 +42,7 @@ export class Todo {
     this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
 
     this._todoNameEl.textContent = this._name;
-
+    console.log(data);
     this._generateDueDate();
     this._generateCheckBox();
     this._setEventListeners();
