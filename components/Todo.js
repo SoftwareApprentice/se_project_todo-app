@@ -14,16 +14,11 @@ export class Todo {
 
   _setEventListeners() {
     this._todoCheckboxEl.addEventListener("change", () => {
-      console.log(this._todoCheckboxEl.checked);
-      debugger;
       this._handleCheck(this._todoCheckboxEl.checked);
     });
 
     this._todoDeleteBtn.addEventListener("click", () => {
-      if (this._todoCheckboxEl.checked) {
-        this._handleCheck(false);
-      }
-      this._handleDelete();
+      this._handleDelete(this._todoCheckboxEl.checked);
       this._todoElement.remove();
       this._todoElement = null;
     });
