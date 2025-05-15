@@ -3,6 +3,7 @@ import { Todo } from "../components/Todo.js";
 import { FormValidator } from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import TodoCounter from "../components/TodoCounter.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 // const addTodoPopupEl = document.querySelector("#add-todo-popup");
@@ -10,8 +11,18 @@ const addTodoForm = document.forms["add-todo-form"];
 // const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
 
+const todoCounter = new TodoCounter(initialTodos, ".counter__text");
+
+function handleCheck(completed) {
+  todoCounter.updateCompleted(completed);
+}
+
+function handleDelete() {
+  todoCounter.updateTotal(false);
+}
+
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template");
+  const todo = new Todo(data, "#todo-template", handleCheck, handleDelete);
   const todoElement = todo.getView();
   return todoElement;
 };
@@ -32,41 +43,15 @@ const addTodoPopup = new PopupWithForm({
   handleFormSubmit: (formInputs) => {
     const todo = generateTodo(formInputs);
     todoSection.addItem(todo);
+    todoCounter.updateTotal(true);
   },
 });
 
 addTodoPopup.setEventListeners();
 
-function handleEscape(evt) {
-  if (evt.key === "Escape") {
-    const modal = document.querySelector(".popup_visible");
-    closeModal(modal);
-  }
-}
-
-const openModal = (modal) => {
-  document.addEventListener("keydown", handleEscape);
-  modal.classList.add("popup_visible");
-};
-
-const closeModal = (modal) => {
-  document.removeEventListener("keydown", handleEscape);
-  modal.classList.remove("popup_visible");
-};
-
 addTodoButton.addEventListener("click", () => {
   addTodoPopup.open();
 });
-
-// addTodoCloseBtn.addEventListener("click", () => {
-//   addTodoPopup.close();
-// });
-
-// addTodoForm.addEventListener("submit", (evt) => {
-//   evt.preventDefault();
-
-//   closeModal(addTodoPopupEl);
-// });
 
 const formvValidate = new FormValidator(validationConfig, addTodoForm);
 formvValidate.enableValidation();
