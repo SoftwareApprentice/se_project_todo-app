@@ -4,10 +4,10 @@ import { FormValidator } from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import TodoCounter from "../components/TodoCounter.js";
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoForm = document.forms["add-todo-form"];
-const todosList = document.querySelector(".todos__list");
 
 const todoCounter = new TodoCounter(initialTodos, ".counter__text");
 
@@ -28,11 +28,15 @@ const generateTodo = (data) => {
   return todoElement;
 };
 
+const renderTodo = (item) => {
+  const todo = generateTodo(item);
+  todoSection.addItem(todo);
+};
+
 const todoSection = new Section({
   items: initialTodos,
   renderer: (item) => {
-    const todo = generateTodo(item);
-    todoSection.addItem(todo);
+    renderTodo(item);
   },
   containerSelector: ".todos__list",
 });
@@ -42,8 +46,8 @@ todoSection.renderItems();
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
   handleFormSubmit: (formInputs) => {
-    const todo = generateTodo(formInputs);
-    todoSection.addItem(todo);
+    formInputs.id = uuidv4();
+    renderTodo(formInputs);
     todoCounter.updateTotal(true);
   },
 });

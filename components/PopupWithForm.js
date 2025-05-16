@@ -1,5 +1,4 @@
 import Popup from "./Popup.js";
-import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 class PopupWithForm extends Popup {
   constructor({ popupSelector, handleFormSubmit }) {
@@ -8,8 +7,12 @@ class PopupWithForm extends Popup {
     this._handleFormSubmit = handleFormSubmit;
   }
 
+  _getForm() {
+    return this._popupForm;
+  }
+
   _getInputValues() {
-    this._inputList = this._popupForm.querySelectorAll(".popup__input");
+    this._inputList = this._getForm().querySelectorAll(".popup__input");
     const values = {};
     this._inputList.forEach((input) => {
       values[input.name] = input.value;
@@ -19,7 +22,7 @@ class PopupWithForm extends Popup {
 
   setEventListeners() {
     super.setEventListeners();
-    this._popupForm.addEventListener("submit", (evt) => {
+    this._getForm().addEventListener("submit", (evt) => {
       evt.preventDefault();
       this._handleFormSubmit(this._getInputValues());
       this.close();
